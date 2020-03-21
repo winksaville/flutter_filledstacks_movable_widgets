@@ -3,6 +3,7 @@ import 'package:random_color/random_color.dart';
 
 void main() => runApp(TheApp());
 
+// The application object
 class TheApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -21,51 +22,53 @@ class HomeView extends StatefulWidget {
   _HomeViewState createState() => _HomeViewState();
 }
 
+// The list of movableItems is the State for HomeView.
+// MovableItems list can change during HomeView life time,
+// i.e. each time the FloatingActionButton is pressed a
+// MovableStackItem is created.
 class _HomeViewState extends State<HomeView> {
-  List<Widget> movableItems = [];
+  List<Widget> _movableItems = [];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            setState(() {
-              movableItems.add(MovableStackItem());
-            });
+            setState(() => _movableItems.add(MovableStackItem()));
           },
         ),
         body: Stack(
-          children: movableItems,
+          children: _movableItems,
         ));
   }
 }
 
+// A MovableStackItem is a "Container" that can be moved.
 class MovableStackItem extends StatefulWidget {
   @override
-  _MovableStackItemState createState() => _MovableStackItemState();
+  _MovableStackItemState createState() =>
+      _MovableStackItemState(color: RandomColor().randomColor());
 }
 
+// Creates the Container (a square 150x150) which its position can
+// change by dragging after it's created.
 class _MovableStackItemState extends State<MovableStackItem> {
-  double xPosition = 0;
-  double yPosition = 0;
-  Color color;
+  double _xPosition = 0;
+  double _yPosition = 0;
+  final Color color;
 
-  @override
-  void initState() {
-    color = RandomColor().randomColor();
-    super.initState();
-  }
+  _MovableStackItemState({@required this.color});
 
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      top: yPosition,
-      left: xPosition,
+      top: _yPosition,
+      left: _xPosition,
       child: GestureDetector(
         onPanUpdate: (tapInfo) {
           setState(() {
-            xPosition += tapInfo.delta.dx;
-            yPosition += tapInfo.delta.dy;
+            _xPosition += tapInfo.delta.dx;
+            _yPosition += tapInfo.delta.dy;
           });
         },
         child: Container(
