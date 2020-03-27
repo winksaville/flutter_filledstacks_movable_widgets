@@ -53,8 +53,8 @@ class MovableStackItem extends StatefulWidget {
 // Creates the Container (a square 150x150) which its position can
 // change by dragging after it's created.
 class _MovableStackItemState extends State<MovableStackItem> {
-  double _xPosition = 0;
-  double _yPosition = 0;
+  double _xPosition = 25;
+  double _yPosition = 50;
   final Color color;
 
   _MovableStackItemState({@required this.color});
